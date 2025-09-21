@@ -1,13 +1,146 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>My First Site</title>
-<link rel="stylesheet" href = "style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bakery Simulator</title>
+  <style>
+    body {
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      background: #fff8f0;
+      text-align: center;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      color: #e67e22;
+    }
+    #game {
+      margin-top: 20px;
+    }
+    #orderCard {
+      border: 2px solid #333;
+      padding: 10px;
+      background: #ffe6f2;
+      display: inline-block;
+      margin-bottom: 20px;
+      border-radius: 10px;
+    }
+    #ingredients button {
+      margin: 5px;
+      padding: 10px 15px;
+      border-radius: 12px;
+      border: none;
+      background: #ff7eb9;
+      color: white;
+      cursor: pointer;
+      transition: 0.2s;
+      font-size: 1em;
+    }
+    #ingredients button:hover {
+      background: #ff4d94;
+    }
+    #plate {
+      margin-top: 20px;
+      min-height: 60px;
+      border: 2px dashed #555;
+      padding: 10px;
+      background: #fff;
+      border-radius: 10px;
+    }
+    .ingredient {
+      display: inline-block;
+      margin: 4px;
+      padding: 6px 12px;
+      border-radius: 8px;
+      background: #f9e2ff;
+      border: 1px solid #ccc;
+    }
+    #score {
+      font-size: 1.2em;
+      margin-top: 15px;
+    }
+  </style>
 </head>
 <body>
-    <h1>Hello World!</h1>
-    <p>This is my first website!</p>
-    <button onclick="sayHi()">Click Me</button>
-    <script src=""script.js"></script>
+  <h1>Bakery Simulator 🍩🧁🍪</h1>
+
+  <div id="game">
+    <div id="orderCard">
+      <strong>Customer Order:</strong> <span id="orderText"></span>
+    </div>
+
+    <div id="ingredients">
+      <button onclick="addIngredient('Cupcake')">🧁 Cupcake</button>
+      <button onclick="addIngredient('Cookie')">🍪 Cookie</button>
+      <button onclick="addIngredient('Donut')">🍩 Donut</button>
+      <button onclick="addIngredient('Frosting')">🍥 Frosting</button>
+      <button onclick="addIngredient('Sprinkles')">✨ Sprinkles</button>
+      <button onclick="addIngredient('Chocolate Chips')">🍫 Chocolate Chips</button>
+      <button onclick="addIngredient('Glaze')">🍯 Glaze</button>
+    </div>
+
+    <div id="plate"></div>
+
+    <button onclick="submitOrder()">Serve Customer</button>
+    <div id="score">Score: 0</div>
+  </div>
+
+  <script>
+    const possibleIngredients = [
+      "Cupcake",
+      "Cookie",
+      "Donut",
+      "Frosting",
+      "Sprinkles",
+      "Chocolate Chips",
+      "Glaze"
+    ];
+    let currentOrder = [];
+    let playerPlate = [];
+    let score = 0;
+
+    function generateOrder() {
+      currentOrder = [];
+      const numItems = Math.floor(Math.random() * 3) + 2; // 2-4 items
+      for (let i = 0; i < numItems; i++) {
+        const item = possibleIngredients[Math.floor(Math.random() * possibleIngredients.length)];
+        currentOrder.push(item);
+      }
+      document.getElementById("orderText").textContent = currentOrder.join(", ");
+      playerPlate = [];
+      document.getElementById("plate").innerHTML = "";
+    }
+
+    function addIngredient(ingredient) {
+      playerPlate.push(ingredient);
+      const span = document.createElement("span");
+      span.className = "ingredient";
+      span.textContent = ingredient;
+      document.getElementById("plate").appendChild(span);
+    }
+
+    function submitOrder() {
+      if (arraysEqual(currentOrder, playerPlate)) {
+        score += 10;
+        alert("Delicious! Perfect order! +10 points");
+      } else {
+        alert("Oops! The customer isn’t happy. Try again.");
+      }
+      document.getElementById("score").textContent = "Score: " + score;
+      generateOrder();
+    }
+
+    function arraysEqual(a, b) {
+      if (a.length !== b.length) return false;
+      for (let i = 0; i < a.length; i++) {
+        if (a[i] !== b[i]) return false;
+      }
+      return true;
+    }
+
+    // Start the first order
+    generateOrder();
+  </script>
 </body>
 </html>
